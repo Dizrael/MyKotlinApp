@@ -1,42 +1,73 @@
 package ru.dizraelapps.mykotlinapp.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import ru.dizraelapps.mykotlinapp.data.entity.Note
+import java.util.*
 
 object NotesRepository{
-    private val notes: List<Note> = listOf(
+
+    private val noteLiveData = MutableLiveData<List<Note>>()
+
+    private val notes = mutableListOf(
         Note(
+            UUID.randomUUID().toString(),
             "1я заметка",
             "Текст 1й заметки",
-            0xffEE4444.toInt()
+            Note.Color.WHITE
         ),
         Note(
+            UUID.randomUUID().toString(),
             "2я заметка",
             "Текст 2й заметки",
-            0xffDE6BA8.toInt()
+            Note.Color.YELLOW
         ),
         Note(
+            UUID.randomUUID().toString(),
             "3я заметка",
             "Текст 3й заметки",
-            0xffA0F0F6.toInt()
+            Note.Color.BLUE
         ),
         Note(
+            UUID.randomUUID().toString(),
             "4я заметка",
             "Текст 4й заметки",
-            0xff35F65C.toInt()
+            Note.Color.ORANGE
         ),
         Note(
+            UUID.randomUUID().toString(),
             "5я заметка",
             "Текст 5й заметки",
-            0xffF6F635.toInt()
+            Note.Color.GREEN
         ),
         Note(
+            UUID.randomUUID().toString(),
             "6я заметка",
             "Текст 6й заметки",
-            0xff5979F7.toInt()
+            Note.Color.RED
         )
     )
 
-    fun getNotes(): List<Note>{
-        return notes
+    init {
+        noteLiveData.value = notes
+    }
+
+    fun getNotes(): LiveData<List<Note>>{
+        return noteLiveData
+    }
+
+    fun saveNote(note:Note){
+        addOrReplace(note)
+        noteLiveData.value = notes
+    }
+
+    private fun addOrReplace(note: Note){
+        for (i in 0 until notes.size){
+            if(notes[i] == note){
+                notes[i] = note
+                return
+            }
+        }
+        notes.add(note)
     }
 }

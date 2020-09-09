@@ -1,15 +1,13 @@
-package ru.dizraelapps.mykotlinapp.ui
+package ru.dizraelapps.mykotlinapp.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dizraelapps.mykotlinapp.R
+import ru.dizraelapps.mykotlinapp.ui.note.NoteActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,12 +20,18 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         recycler_view_notes.layoutManager = GridLayoutManager(this, 2)
-        adapter = NotesRecyclerViewAdapter()
+        adapter = NotesRecyclerViewAdapter {
+            NoteActivity.start(this, it)
+        }
         recycler_view_notes.adapter = adapter
 
         viewModel.getViewState().observe(this, Observer {value ->
             value?.let { adapter.notes = it.notes }
         })
+
+        fab.setOnClickListener{
+            NoteActivity.start(this)
+        }
 
     }
 }
