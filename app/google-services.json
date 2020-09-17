@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "107441967292",
+    "firebase_url": "https://mykotlinnotesapp.firebaseio.com",
+    "project_id": "mykotlinnotesapp",
+    "storage_bucket": "mykotlinnotesapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107441967292:android:da09727623ba6c6af480b9",
+        "android_client_info": {
+          "package_name": "ru.dizraelapps.mykotlinapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107441967292-99moj7qoeci8jqadof4konahbqo0s7f8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.dizraelapps.mykotlinapp",
+            "certificate_hash": "e4243d703fbbaedb1ea570bce098bd2c40f10d8d"
+          }
+        },
+        {
+          "client_id": "107441967292-ea9timssvte5m363e2mk82s3v2fn3uam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd_njpGE3XuxqBzpeyL1wu9B1DYIJ_A_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107441967292-ea9timssvte5m363e2mk82s3v2fn3uam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

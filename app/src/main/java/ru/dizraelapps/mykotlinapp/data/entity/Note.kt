@@ -6,7 +6,7 @@ import java.util.*
 
 @Parcelize
 data class Note(
-    var id: String,
+    var id: String = "",
     var title: String = "",
     var text: String = "",
     var color: Color = Color.WHITE,
@@ -32,5 +32,14 @@ data class Note(
         if (id != other.id) return false
 
         return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + text.hashCode()
+        result = 31 * result + color.hashCode()
+        result = 31 * result + lastChanged.hashCode()
+        return result
     }
 }
