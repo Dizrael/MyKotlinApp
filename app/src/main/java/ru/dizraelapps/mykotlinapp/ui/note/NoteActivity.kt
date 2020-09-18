@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
@@ -98,7 +99,7 @@ class NoteActivity: BaseActivity<Note?, NoteViewState>() {
             lastChanged = Date()
         ) ?: Note(UUID.randomUUID().toString(), et_title.text.toString(), et_body.text.toString())
 
-        note?.let { viewModel.saveNote(it) }
+        note?.let { viewModel.saveNote(it) } ?: let { Log.d("NOTE_TAG", "Note = null O_o") }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId){

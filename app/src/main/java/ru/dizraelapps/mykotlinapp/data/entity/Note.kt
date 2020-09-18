@@ -10,10 +10,10 @@ data class Note(
     var title: String = "",
     var text: String = "",
     var color: Color = Color.WHITE,
-    var lastChanged: Date = Date())
-    : Parcelable {
+    var lastChanged: Date = Date()
+ ) : Parcelable {
 
-    enum class Color{
+    enum class Color {
         WHITE,
         YELLOW,
         BLUE,
@@ -24,7 +24,7 @@ data class Note(
     }
 
     override fun equals(other: Any?): Boolean {
-        if(this === other) return true
+        if (this === other) return true
 
         if (javaClass != other?.javaClass) return false
 
