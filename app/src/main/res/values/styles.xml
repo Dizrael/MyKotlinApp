@@ -9,4 +9,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="LoginStyle" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">#B53030</item>
+        <item name="colorPrimaryDark">#515153</item>
+        <item name="colorAccent">#C54B09</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>
