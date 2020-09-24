@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -43,6 +47,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+
+    //Koin for Android
+    implementation 'org.koin:koin-android:2.1.6'
+    implementation 'org.koin:koin-android-viewmodel:2.1.6'
+    implementation "org.koin:koin-android-ext:2.1.6"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

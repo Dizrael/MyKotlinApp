@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_note.view.*
 import ru.dizraelapps.mykotlinapp.R
 import ru.dizraelapps.mykotlinapp.data.entity.Note
+import ru.dizraelapps.mykotlinapp.extencions.getColorInt
 
 class NotesRecyclerViewAdapter(val onItemClick: ((Note) -> Unit)?= null): RecyclerView.Adapter<NotesRecyclerViewAdapter.ViewHolder>() {
 
@@ -42,7 +43,7 @@ class NotesRecyclerViewAdapter(val onItemClick: ((Note) -> Unit)?= null): Recycl
                 Note.Color.MAGENTA -> R.color.magenta
             }
 
-            setBackgroundColor(ContextCompat.getColor(itemView.context, color ))
+            setBackgroundColor(note.color.getColorInt(context))
 
             itemView.setOnClickListener {
                 onItemClick?.invoke(note)

@@ -1,13 +1,13 @@
 package ru.dizraelapps.mykotlinapp.ui.splash
 
-import androidx.lifecycle.ViewModelProvider
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dizraelapps.mykotlinapp.ui.base.BaseActivity
 import ru.dizraelapps.mykotlinapp.ui.main.MainActivity
 
 class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
-    override val viewModel by lazy {
-        ViewModelProvider(this).get(SplashViewModel::class.java)
-    }
+
+    override val viewModel: SplashViewModel by viewModel()
+
     override val layoutRes = null
 
     override fun onResume() {

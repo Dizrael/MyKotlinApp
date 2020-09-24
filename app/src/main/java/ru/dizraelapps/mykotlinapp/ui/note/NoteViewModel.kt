@@ -7,7 +7,7 @@ import ru.dizraelapps.mykotlinapp.data.model.NoteResult
 import ru.dizraelapps.mykotlinapp.ui.base.BaseViewModel
 import ru.dizraelapps.mykotlinapp.ui.main.MainViewState
 
-class NoteViewModel: BaseViewModel<Note?, NoteViewState>() {
+class NoteViewModel(val notesRepository: NotesRepository): BaseViewModel<NoteViewState.Data, NoteViewState>() {
 
     init {
         viewStateLiveData.value = NoteViewState()
@@ -20,10 +20,12 @@ class NoteViewModel: BaseViewModel<Note?, NoteViewState>() {
     }
 
     fun loadNote(noteId: String){
-        NotesRepository.getNoteById(noteId).observeForever {result ->
+        notesRepository.getNoteById(noteId).observeForever {result ->
             result ?: return@observeForever
-            when(result){
-                is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(note = result.data as? Note)
+            when(result){is NoteResult.Success<*> -> {
+                currentNote = result.data as? Note
+                viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = currentNote))
+            }
                 is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
             }
         }
@@ -31,7 +33,20 @@ class NoteViewModel: BaseViewModel<Note?, NoteViewState>() {
 
     override fun onCleared() {
         currentNote?.let {
-            NotesRepository.saveNote(it)
+            notesRepository.saveNote(it)
+        }
+    }
+
+    fun deleteNote(){
+        currentNote?.let {
+            notesRepository.deleteNote(it.id).observeForever {result ->
+                result ?: return@observeForever
+                currentNote = null
+                when (result) {
+                    is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(NoteViewState.Data(isDeleted = true))
+                    is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
+                }
+            }
         }
     }
 
