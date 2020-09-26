@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
+import org.koin.android.ext.android.inject
 import ru.dizraelapps.mykotlinapp.R
 import ru.dizraelapps.mykotlinapp.data.errors.NoAuthException
+import ru.dizraelapps.mykotlinapp.data.provider.FirestoreProvider
 
 abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
 
@@ -18,6 +20,8 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
 
     abstract val viewModel: BaseViewModel<T, S>
     abstract val layoutRes: Int?
+
+    val firestoreProvider: FirestoreProvider by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
