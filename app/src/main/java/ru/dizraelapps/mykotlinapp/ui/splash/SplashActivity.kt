@@ -4,7 +4,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dizraelapps.mykotlinapp.ui.base.BaseActivity
 import ru.dizraelapps.mykotlinapp.ui.main.MainActivity
 
-class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity: BaseActivity<Boolean?>() {
 
     override val viewModel: SplashViewModel by viewModel()
 

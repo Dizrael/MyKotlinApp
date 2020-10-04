@@ -19,7 +19,7 @@ import ru.dizraelapps.mykotlinapp.ui.base.BaseActivity
 import ru.dizraelapps.mykotlinapp.ui.note.NoteActivity
 import ru.dizraelapps.mykotlinapp.ui.splash.SplashActivity
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
+class MainActivity : BaseActivity<List<Note>?>(), LogoutDialog.LogoutListener {
 
     companion object{
         fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
