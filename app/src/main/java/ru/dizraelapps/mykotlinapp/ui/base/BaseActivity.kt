@@ -7,40 +7,65 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.dizraelapps.mykotlinapp.R
 import ru.dizraelapps.mykotlinapp.data.errors.NoAuthException
 import ru.dizraelapps.mykotlinapp.data.provider.FirestoreProvider
+import kotlin.coroutines.CoroutineContext
 
-abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
+abstract class BaseActivity<S>: AppCompatActivity(), CoroutineScope {
+
+    override val coroutineContext: CoroutineContext by lazy {
+        Dispatchers.Main + Job()
+    }
 
     companion object{
         private const val RC_SIGN_IN = 9794
     }
 
-    abstract val viewModel: BaseViewModel<T, S>
+    abstract val viewModel: BaseViewModel<S>
     abstract val layoutRes: Int?
 
-    val firestoreProvider: FirestoreProvider by inject()
+    private lateinit var dataJob: Job
+    private lateinit var errorJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         layoutRes?.let {
             setContentView(it)
         }
-        viewModel.getViewState().observe(this, Observer {state ->
-            state ?: return@Observer
-            state.error?.let {
-                renderError(it)
-                return@Observer
-            }
-            renderData(state.data)
-        })
+
     }
 
-    abstract fun renderData(data: T)
+    override fun onStart() {
+        super.onStart()
+        dataJob = launch {
+            viewModel.getViewChannel().consumeEach {
+                renderData(it)
+            }
+        }
 
-    protected fun renderError(error: Throwable){
+        errorJob = launch {
+            viewModel.getErrorChannel().consumeEach {
+                renderError(it)
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        dataJob.cancel()
+        errorJob.cancel()
+    }
+
+    abstract fun renderData(data: S)
+
+    private fun renderError(error: Throwable){
         when(error){
             is NoAuthException -> startLogin()
             else -> error.message?.let {
@@ -71,7 +96,7 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
         }
     }
 
-    protected fun showError(error: String){
+    private fun showError(error: String){
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 }

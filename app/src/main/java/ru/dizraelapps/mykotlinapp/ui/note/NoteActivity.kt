@@ -18,7 +18,7 @@ import ru.dizraelapps.mykotlinapp.ui.base.BaseActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
+class NoteActivity: BaseActivity<NoteData>() {
 
     companion object{
         private const val NOTE_KEY = "note"
@@ -58,7 +58,7 @@ class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
         }
     }
 
-    override fun renderData(data: NoteViewState.Data) {
+    override fun renderData(data: NoteData) {
         if (data.isDeleted) {
             finish()
             return

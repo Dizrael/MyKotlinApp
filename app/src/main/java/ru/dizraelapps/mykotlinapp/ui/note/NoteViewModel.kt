@@ -1,52 +1,43 @@
 package ru.dizraelapps.mykotlinapp.ui.note
 
-import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.launch
 import ru.dizraelapps.mykotlinapp.data.NotesRepository
 import ru.dizraelapps.mykotlinapp.data.entity.Note
-import ru.dizraelapps.mykotlinapp.data.model.NoteResult
 import ru.dizraelapps.mykotlinapp.ui.base.BaseViewModel
-import ru.dizraelapps.mykotlinapp.ui.main.MainViewState
 
-class NoteViewModel(val notesRepository: NotesRepository): BaseViewModel<NoteViewState.Data, NoteViewState>() {
-
-    init {
-        viewStateLiveData.value = NoteViewState()
-    }
-
+class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<NoteData>() {
     private var currentNote: Note? = null
 
-    fun saveNote(note:Note){
+    fun saveNote(note: Note) {
         currentNote = note
     }
 
-    fun loadNote(noteId: String){
-        notesRepository.getNoteById(noteId).observeForever {result ->
-            result ?: return@observeForever
-            when(result){is NoteResult.Success<*> -> {
-                currentNote = result.data as? Note
-                viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = currentNote))
+    fun loadNote(noteId: String) = launch {
+        try {
+            notesRepository.getNoteById(noteId)?.let {
+                setData(NoteData(note = it))
             }
-                is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
-            }
+        } catch (e: Throwable) {
+            setError(e)
         }
     }
 
     override fun onCleared() {
-        currentNote?.let {
-            notesRepository.saveNote(it)
+        launch {
+            currentNote?.let {
+                notesRepository.saveNote(it)
+            }
         }
     }
 
-    fun deleteNote(){
-        currentNote?.let {
-            notesRepository.deleteNote(it.id).observeForever {result ->
-                result ?: return@observeForever
-                currentNote = null
-                when (result) {
-                    is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(NoteViewState.Data(isDeleted = true))
-                    is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
-                }
+    fun deleteNote() = launch {
+        try {
+            currentNote?.let {
+                notesRepository.deleteNote(it.id)
+                setData(NoteData(isDeleted = true))
             }
+        } catch (e: Throwable) {
+            setError(e)
         }
     }
 
